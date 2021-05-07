@@ -308,6 +308,38 @@ exports.updateAccount=function(req,res) {
              var dob=req.body.dob     || x.dob;
              var address=req.body.address || x.address;
              var description=req.body.description || x.description;
+	     var passwd=req.body.password || x.password;
+
+             // separate Update for passwd
+
+			 // for debugging
+			 if(req.body.password)
+			 {
+				 bcrypt.hash(req.body.password,10,(error,data)=>{
+				 	if(data)
+					{
+						User.updateOne({userID:userID,token:token},{$set: { password:data}}
+							,{returnOriginal : false}).exec()
+							.then(data=>{
+								if(data)
+								{
+									console.log(" Passwd Updated ");
+								}
+								else
+								{
+									console.log(" passwd not found")
+								}
+							})
+							.catch(error=>{
+								if(error)
+								{
+									console.log(" Error while fetcing data , Error : "+error);
+								}
+							});
+					}
+				 });
+			 }
+			 // for debugging	 
 
 
 
