@@ -12,9 +12,11 @@ step 1: Install package via either Yarn or NPM once . Its done  Then head in to 
  
  
  step 2:  If U Use Yarn 
-               Command :   yarn run start
+               (Command :   yarn run start)
+               
+               
           If U Use NPM 
-               command : num run start
+               (command : num run start)
                
                
 step 3: Since Its API So to Test Use curl download for windows or linux any OS
