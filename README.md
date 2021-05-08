@@ -3,12 +3,16 @@
 Over Here Its an Rest Api Demo which is an which follow common RestFull Structure
 
 Technology 
+
 Backend - node.js 
 DB - mongodb
 framwork- express.js
 
 
 So Now How to run let see 
+
+
+
 
 step 1: Install package via either Yarn or NPM once . Its done  Then head in to the
  dir /app where where U gonna find {const connectionURL} set To Ur URL  Likewise 
