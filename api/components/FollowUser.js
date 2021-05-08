@@ -132,6 +132,9 @@ exports.follow=function (req,res) {
         .then(data=>
         {
 
+            // for debugging
+            var myUID=data[0].userID;
+            // for debuging
             if(data.length>=1)
             {
                 if(followUID)
@@ -196,7 +199,7 @@ exports.follow=function (req,res) {
                             .exec()
                             .then(data=>{
 
-                                console.log(" See This Data after Updating Out Side  : "+data);
+                                console.log(" See This Data after Updating Out Side  : "+data[0]);
 
                                 if(data.length>=1 || data )
                                 {
@@ -213,7 +216,9 @@ exports.follow=function (req,res) {
                                                 arr=JSON.parse(temp);
                                             }
 
-                                            var userWhofollow=data[0].userID;
+                                            //myUID
+                                            //  var userWhofollow=data[0].userID;
+                                            var userWhofollow=myUID;
                                             userWhofollow={name:userWhofollow};
                                             arr[arr.length]=userWhofollow;
                                             arr=JSON.stringify(arr);
@@ -279,31 +284,112 @@ exports.follow=function (req,res) {
 
 
 
+exports.removeFollowing=function (req,res) {
+    var userID=req.body.userID;
+    var token=req.body.token;
+    var targeted=req.body.targeted;
+
+    user.find({userID:userID,token:token}).exec()
+        .then(data=>{
+          if(data.length<1)
+          {
+            return   res.status(401).json({ MSG:" Credintial Mismatch"});
+          }
+        })
+        .catch(error=>{
+           if(error)
+           {
+                  res.status(401).json({ MSG:" Credintial Mismatch"});
+           }
+        });
+
+    user.find({userID:userID,token:token}).exec()
+        .then(data=>{
+            // Now the funda is If we are removing the following then Then Targeted follower will get decrease
+            // So update on Both side
+            if(data.length>=1 || data)
+            {
+                var arr=data[0].following;
+                if(arr===undefined)
+                {
+                     res.status(401).json({MSG:" U have no following"});
+                }
+                arr=JSON.parse(arr);
+                // check If exist
+                for(var x=0;x<arr.length;x++)
+                {
+                    console.log(" Insider :  name : "+arr[x].name+" ,  val : "+targeted);
+                    if(arr[x].name===targeted)
+                    {
+                        arr.splice(x, 1);
+                    }
+                }
+                arr=JSON.stringify(arr);
+                // update
+                user.updateOne({userID:userID},{$set: {following:arr}},{returnOriginal : false}).exec()
+                    .then(data=>{
+                        if(data || data.length>=1)
+                        {
+                            console.log(" Updated on Own System");
+                        }
+                        else
+                        {
+                            console.log(" data not found");
+                        }
+                    })
+                    .catch(error=>{
+                       console.log(" Error : "+error);
+                    });
+            }
+        })
+        .catch(error=>{
+            if(error)
+            {
+                //return res.status(401).json({MSG:" Error : "+error});
+                console.log(" Error while fetching Data");
+            }
+        });
+    // On Guy to which U had followed means Its count as an follower to him/her
+    user.find({userID:targeted}).exec()
+        .then(data=>{
+            if(data)
+            {
+                var followers=data[0].followers;
+                // need to check whether It is defined or it is following any one
+                if(followers===undefined)
+                {
+                    return res.status(401).json({MSG:" Undefied  "});
+                }
+                followers=JSON.parse(followers);
+                for(var i=0;i<followers.length;i++)
+                {
+                    console.log(" compare "+followers[i].name+" userID"+" userID : ");
+                    if(followers[i].name===userID)
+                    {
+                        followers.splice(i, 1);
+                    }
+                }
+                followers=JSON.stringify(followers);
+
+                // Update
+                user.updateOne({userID:targeted},{$set: {followers:followers}},{returnOriginal : false}).exec()
+                    .then(data=>{
+                        if(data.length || data)
+                        {
+                            return res.status(200).json({MSG:"Successfull"});
+                        }
+                    })
+                    .catch(error=>{
+                       if(error)
+                       {
+                           return res.status(400).json({MSG:" Error Part Last : "+error});
+                       }
+                    });
+            }
+        })
 
 
-// Trash
 
-// data=JSON.parse(JSON.stringify(data));
-/*
-str=JSON.stringify(data);
-var followerCurrent= data.followers;
-var followNew=followUID;
-var finalFollower;
-followNew.push(followUID);
-// add to arr
-//followerCurrent.push(followUID);
-//followerCurrent=followerCurrent.toArray();
-// var merge=[];
-if(followerCurrent===undefined)
-{
-    finalFollower=[{"name":followNew}];
-}
-else
-{
 
-}
-followerCurrent=data.toString();
-followerCurrent=followerCurrent.replace('\n','').toString();
-//followerCurrent=followerCurrent.Array();
+};
 
- */
