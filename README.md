@@ -2,6 +2,11 @@
 
 Over Here Its an Rest Api Demo which is an which follow common RestFull Structure
 
+Technology 
+Backend - node.js 
+DB - mongodb
+framwork- express.js
+
 
 So Now How to run let see 
 
