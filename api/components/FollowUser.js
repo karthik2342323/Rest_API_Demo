@@ -180,16 +180,11 @@ exports.follow=function (req,res) {
                         {
                             currentFollowerList=[];
                         }
-                        else
-                        {
-                            // If Its defined then Its in String format so parse to JSON
-                            //currentFollowerList=JSON.parse(JSON.stringify(currentFollowerList));
-                        }
                         currentFollowerList[currentFollowerList.length]=newFollower;
                         // Now for storing perspective store in string but while fetching
                         // convert to JSON
                         //currentFollowerList=JSON.stringify(currentFollowerList);
-                        currentFollowerList=currentFollowerList+"";
+                        currentFollowerList=JSON.stringify(currentFollowerList);
 
                         // return  res.status(200).json({Message:" Proceed Yet :          "+str+" undefied  : "+followerCurrent});
                         //data=JSON.stringify(data).toString();
@@ -200,21 +195,66 @@ exports.follow=function (req,res) {
                         user.updateOne({email:email,token:token},{$set: {following:currentFollowerList}},{returnOriginal : false})
                             .exec()
                             .then(data=>{
-                                if(data)
+
+                                console.log(" See This Data after Updating Out Side  : "+data);
+
+                                if(data.length>=1 || data )
                                 {
+                                    // I mean We had added on Our Profile But On that User Need to update Follower
+
+
+                                    user.find({userID:followUID}).exec()
+                                        .then(data=>{
+                                            var arr=[];
+                                            var temp=data[0].followers;
+                                            console.log(" See This Inside : "+temp);
+                                            if(temp!==undefined)
+                                            {
+                                                arr=JSON.parse(temp);
+                                            }
+
+                                            var userWhofollow=data[0].userID;
+                                            userWhofollow={name:userWhofollow};
+                                            arr[arr.length]=userWhofollow;
+                                            arr=JSON.stringify(arr);
+                                            user.updateOne({userID:followUID},{$set: {followers:arr}},{returnOriginal : false}).exec()
+                                                .then(data=>{
+                                                    if(data)
+                                                    {
+                                                        console.log(" Successfull ");
+                                                    }
+                                                    else
+                                                    {
+                                                        console.log(" Follower  Not exist in DB")
+                                                    }
+                                                })
+                                                .catch(error=>{
+                                                    if(error)
+                                                    {
+                                                        console.log(" Error : "+error);
+                                                    }
+                                                });
+
+                                        })
+                                        .catch(error=>{
+                                            console.log(" Error while fetching the data from Follower to whon U Had followed")
+                                        });
+                                    console.log(" See Followers : "+arr.length);
+
+
                                     // Update on the person We are following like Ad on the follower List
                                     return  res.status(200).json({Message:" Follower Added  : "+followUID});
                                 }
                                 else
                                 {
-                                    return  res.status(401).json({Message:" Error while adding Follower : "+followUID});
+                                    return  res.status(401).json({Message:" Error while adding Follower _1 : "+followUID});
                                 }
                             })
                             .catch(error=>{
                                 if(error)
                                 {
                                     console.log(" Error while adding follower ");
-                                    return  res.status(401).json({Message:" Error while adding Follower : "+followUID});
+                                    return  res.status(401).json({Message:" Error while adding Follower _2: "+followUID});
                                 }
                             });
 
