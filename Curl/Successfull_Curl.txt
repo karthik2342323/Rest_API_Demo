@@ -1,33 +1,20 @@
 
 ---------   signup   ----------------
  
-1) curl -d "email=user1234@gmail.com&password=1sdfghdfg89" -X POST http://localhost:3000/user/signup
-
-
-Responce : {"message":"User Successfully Created!!"}
-
-
-
-Proper Para
-
-2) curl -d "email=user1@outlook.com&password=123456789&name=asdfg&dob=23/02/2000&address=werthyhgfds,sdfghhsdfrg,sdefrgth&description=sdfghnj&" -X POST http://localhost:3000/user/signup
-
-
-
     // current
-3) curl -d "email=user1@outlook.com&password=123456789&name=asdfg&dob=23/02/2000&address=werthyhgfds,sdfghhsdfrg,sdefrgth&description=sdfghnj&userID=first" -X POST http://localhost:3000/user/signup
+1 curl -d "email=user1@outlook.com&password=123456789&name=asdfg&dob=23/02/2000&address=werthyhgfds,sdfghhsdfrg,sdefrgth&description=sdfghnj&userID=first" -X POST http://localhost:3000/user/signup
 
-4) curl -d "email=user2@outlook.com&password=123456789&name=asdfg&dob=23/02/2000&address=werthyhgfds,sdfghhsdfrg,sdefrgth&description=sdfghnj&userID=second" -X POST http://localhost:3000/user/signup
+2 curl -d "email=user2@outlook.com&password=123456789&name=asdfg&dob=23/02/2000&address=werthyhgfds,sdfghhsdfrg,sdefrgth&description=sdfghnj&userID=second" -X POST http://localhost:3000/user/signup
 
 
 -------------- Login  --------------------
 
-2) curl -d "email=makwanakartik53@gmail.com&password=123456789" -X POST http://localhost:3000/user/login
+2) curl -d "email=user2@outlook.com&password=123456789" -X POST http://localhost:3000/user/login
 
 
-Responce : {"message":"Auth Successful!!","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1ha3dhbmFrYXJ0aWs1M0BnbWFpbC5jb20iLCJJZCI6IjYwOTQ1Y2VhOWNmY2I1MzE2OGVkYzQ1NSIsImlhdCI6MTYyMDMzNjMwMCwiZXhwIjoxNjIwMzM5OTAwfQ.8d2Egyq0glSMBnCSiP7KCk0aR7itfKNYVHvEKc24_PA"}
+Responce : 
 
-
+{"message":"Auth Successful!!  U will Require This Token for Traversing any Page","token":"2OUBCQ5DRKKUJ3WTWTVR1LODYVDQZEEGWKJMLVK4KRMLXKUSFRRZFGQCPRVHCGA1VAOUGVBOTp6TYESVSAOCKPzs4FTGU2j5YKxgsR1UGOZASONARWGEVEz8FkLW1OYCGFPWVVRBKNRFyOi4ZPm9DUIBCEBTFBAGSPESnH2ARGDKJOGIq3LRJFOSYRWMl2ILWOWBCGQRVITBFC4JGDX1POr5WRRDBGTJDKXTHZ4ORCDFYMDOLnw5Z4YAOLZIGEQVDP3CCIVZYEIHKWJLZLAEK4GYPXQUCHEWCOYYFKe3PWXLKYCGYSJAIVxKA5FRLWQNVBTLQZVEJISSITi3RNOGDDrr2IZIYc9AJCcUn1QZUGJHsSnH6MOYCBIg5Oa2v4DFFJi1IFNKRZMGUIDk9SSKOjre1i6pX1WZTzq1XMRNAGHPNBNJMJC5mB6PyF3UDEFAIYE4BEIGh2HGRXWGFVLRFOUEGX"}
 
 
 
